@@ -1,0 +1,48 @@
+#!/sbin/openrc-run
+
+SUBSVC="${SVCNAME#*.}"
+[ -z "${SUBSVC}" ] && exit 1
+SUBCFG="/root/docker/${SUBSVC}/docker-compose.yml"
+DOCOCMD="/usr/bin/docker-compose"
+export COMPOSE_HTTP_TIMEOUT=300
+
+depend() {
+  need localmount net docker
+  use dns
+  after docker
+}
+
+configtest() {
+  if ! [ -f "${SUBCFG}" ]; then
+    eerror "The config file ${SUBCFG} does not exist!"
+    return 1
+  fi
+  if "${DOCOCMD}" -f "${SUBCFG}" config >&/dev/null; then
+    einfo "config: ok"
+  else
+    eerror "config: error"
+    return 1
+  fi
+}
+
+start() {
+  configtest || return 1
+  ebegin "Starting dockerservice ${SUBSVC}"
+  "${DOCOCMD}" -f "${SUBCFG}" up -d --no-recreate --no-build --no-deps
+  eend $?
+}
+
+stop() {
+  ebegin "Stopping dockerservice ${SUBSVC}"
+  "${DOCOCMD}" -f "${SUBCFG}" stop --timeout=300
+  eend $?
+}
+
+status() {
+  if [ "$("${DOCOCMD}" -f "${SUBCFG}" top | wc -l)" -gt "0" ]; then
+    einfo "status: started"
+  else
+    einfo "status: stopped"
+    return 3
+  fi
+}
