@@ -1,8 +1,10 @@
 #!/sbin/openrc-run
 
+: ${SUBCFGDIR:=/root/docker}
+
 SUBSVC="${SVCNAME#*.}"
 [ -z "${SUBSVC}" ] && exit 1
-SUBCFG="/root/docker/${SUBSVC}/docker-compose.yml"
+SUBCFG="${SUBCFGDIR}/${SUBSVC}/docker-compose.yml"
 DOCOCMD="/usr/bin/docker-compose"
 export COMPOSE_HTTP_TIMEOUT=300
 
