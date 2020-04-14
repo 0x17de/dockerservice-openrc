@@ -5,3 +5,5 @@ Copy the script dockerservice to `/etc/init.d/dockerservice`. Each docker-compos
 The directory containing the service directories can be overridden by setting the variable `SUBCFGDIR`.  This can be set for a specific service in its `/etc/conf.d/dockerservice.$SERVICENAME` file, or the default may be changed by setting it in `/etc/rc.conf` or an `/etc/rc.conf.d` file.
 
 Alternatively, the complete path to the docker-compose input file may be specified by setting SUBCFG in the services's `/etc/rc.conf.d` file.  The value of this variable is passed to the `-f` option of `docker-compose`.
+
+By default, the `docker-compose up` command is passed the arguments `-d --no-recreate --no-build --no-deps`.  `-d` is required because that's what puts the containers in the background, but the remaining arguments may be overridden by setting `DOCKER_COMPOSE_UP_ARGS`.
