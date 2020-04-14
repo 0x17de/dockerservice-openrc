@@ -1,6 +1,7 @@
 #!/sbin/openrc-run
 
 : ${SUBCFGDIR:=/root/docker}
+DOCKER_COMPOSE_UP_ARGS=${DOCKER_COMPOSE_UP_ARGS-"--no-build --no-recreate --no-deps"}
 
 SUBSVC="${SVCNAME#*.}"
 [ -z "${SUBSVC}" ] && exit 1
@@ -30,7 +31,7 @@ configtest() {
 start() {
   configtest || return 1
   ebegin "Starting dockerservice ${SUBSVC}"
-  "${DOCOCMD}" -f "${SUBCFG}" up -d --no-recreate --no-build --no-deps
+  "${DOCOCMD}" -f "${SUBCFG}" up -d ${DOCKER_COMPOSE_UP_ARGS}
   eend $?
 }
 
