@@ -10,8 +10,7 @@ DOCOCMD="/usr/bin/docker-compose"
 export COMPOSE_HTTP_TIMEOUT=300
 
 description="Manage docker services defined in ${SUBCFG}"
-extra_commands="configtest"
-extra_stopped_commands="build"
+extra_commands="configtest build"
 description_configtest="Check configuration via \"docker-compose -f ${SUBCFG} config\""
 description_build="Run \"docker-compose -f ${SUBCFG} build\""
 
