@@ -7,3 +7,8 @@ The directory containing the service directories can be overridden by setting th
 Alternatively, the complete path to the docker-compose input file may be specified by setting SUBCFG in the services's `/etc/rc.conf.d` file.  The value of this variable is passed to the `-f` option of `docker-compose`.
 
 By default, the `docker-compose up` command is passed the arguments `-d --no-recreate --no-build --no-deps`.  `-d` is required because that's what puts the containers in the background, but the remaining arguments may be overridden by setting `DOCKER_COMPOSE_UP_ARGS`.
+
+dockerservice supplies two subcommands in addition to the openrc defaults:
+
+* configtest - verify that the configuration has no syntax errors
+* build - run docker-compose build.
